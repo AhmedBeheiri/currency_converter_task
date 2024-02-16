@@ -29,10 +29,14 @@ final class _$NetworkService extends NetworkService {
   }
 
   @override
-  Future<Response<dynamic>> getLatestRates(List<String> currencies) {
+  Future<Response<dynamic>> getLatestRates(
+    String from,
+    List<String> to,
+  ) {
     final Uri $url = Uri.parse('v1/latest');
     final Map<String, dynamic> $params = <String, dynamic>{
-      'currencies': currencies
+      'base_currency': from,
+      'currencies': to,
     };
     final Request $request = Request(
       'GET',

@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class HomeRemoteDataSource {
   Future<List<CurrencyModel>> getCurrencies();
+  Future<num> getConversionRate(String from, String to);
 }
 
 @LazySingleton(as: HomeRemoteDataSource)
@@ -26,5 +27,16 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     } else {
       throw ServerException(response.statusCode, response.error.toString());
     }
+  }
+
+  @override
+  Future<num> getConversionRate(String from, String to)async {
+    final response = await _networkService.getLatestRates(from, [to]);
+    if (response.isSuccessful) {
+      return num.parse(response.body['data'][to].toString());
+    } else {
+      throw ServerException(response.statusCode, response.error.toString());
+    }
+
   }
 }

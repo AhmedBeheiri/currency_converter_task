@@ -10,10 +10,8 @@ abstract class NetworkService extends ChopperService {
       baseUrl: Uri.parse('https://api.freecurrencyapi.com/'),
       services: [_$NetworkService()],
       interceptors: [
-        const HeadersInterceptor({
-          'Content-Type': 'application/json',
-          'apikey': Env.apiKey
-        }),
+        const HeadersInterceptor(
+            {'Content-Type': 'application/json', 'apikey': Env.apiKey}),
         HttpLoggingInterceptor(),
       ],
       converter: const JsonConverter(),
@@ -25,6 +23,8 @@ abstract class NetworkService extends ChopperService {
   Future<Response> getSupportedCurrencies();
 
   @Get(path: 'v1/latest')
-  Future<Response> getLatestRates(@Query('currencies') List<String> currencies);
-
+  Future<Response> getLatestRates(
+    @Query('base_currency') String from,
+    @Query('currencies') List<String> to,
+  );
 }

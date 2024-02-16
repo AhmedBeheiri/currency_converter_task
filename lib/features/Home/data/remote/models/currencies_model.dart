@@ -1,4 +1,6 @@
-class CurrencyModel {
+import '../../../domain/entities/currency_entity.dart';
+
+class CurrencyModel extends CurrencyEntity {
   String code;
   int decimalDigits;
   String name;
@@ -10,13 +12,18 @@ class CurrencyModel {
 
   CurrencyModel(
       {required this.code,
-        required this.decimalDigits,
-        required this.name,
-        required this.namePlural,
-        required this.rounding,
-        required this.symbol,
-        required this.symbolNative,
-        required this.type});
+      required this.decimalDigits,
+      required this.name,
+      required this.namePlural,
+      required this.rounding,
+      required this.symbol,
+      required this.symbolNative,
+      required this.type})
+      : super(
+          currencyName: name,
+          currencyCode: code,
+          currencySymbol: symbol,
+        );
 
   factory CurrencyModel.fromJson(Map<String, dynamic> json) {
     return CurrencyModel(
