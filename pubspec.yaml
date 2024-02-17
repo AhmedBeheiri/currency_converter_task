@@ -31,6 +31,8 @@ dev_dependencies:
   chopper_generator: ^7.1.1
   envied_generator: ^0.5.3
   flutter_lints: ^3.0.1
+  mockito: ^5.4.4
+  bloc_test: ^9.1.6
 
 flutter:
   uses-material-design: true

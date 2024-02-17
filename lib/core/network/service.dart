@@ -1,11 +1,22 @@
 import 'package:chopper/chopper.dart';
 import 'package:currency_converter_task/env/env.dart';
+import 'package:injectable/injectable.dart';
 
 part 'service.chopper.dart';
 
+@injectable
 @ChopperApi()
 abstract class NetworkService extends ChopperService {
-  static NetworkService create() {
+
+   static NetworkService create() {
+    return NetworkService.init();
+   }
+
+
+   NetworkService();
+
+  @factoryMethod
+   factory NetworkService.init() {
     final client = ChopperClient(
       baseUrl: Uri.parse('https://api.freecurrencyapi.com/'),
       services: [_$NetworkService()],

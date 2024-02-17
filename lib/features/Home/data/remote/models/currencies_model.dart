@@ -1,16 +1,16 @@
 import '../../../domain/entities/currency_entity.dart';
 
 class CurrencyModel extends CurrencyEntity {
-  String code;
-  int decimalDigits;
-  String name;
-  String namePlural;
-  int rounding;
-  String symbol;
-  String symbolNative;
-  String type;
+  final String code;
+  final int decimalDigits;
+  final String name;
+  final String namePlural;
+  final int rounding;
+  final String symbol;
+  final String symbolNative;
+  final String type;
 
-  CurrencyModel(
+  const CurrencyModel(
       {required this.code,
       required this.decimalDigits,
       required this.name,

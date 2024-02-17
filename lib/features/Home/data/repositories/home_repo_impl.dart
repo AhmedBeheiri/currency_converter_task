@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/exceptions.dart';
-import '../local/data_sources/home_local_remote_data_source.dart';
+import '../local/data_sources/home_local_data_source.dart';
 import '../remote/data_sources/home_remote_data_source.dart';
 
 @LazySingleton(as: HomeRepo)

@@ -14,11 +14,9 @@ abstract class HomeRemoteDataSource {
 
 @LazySingleton(as: HomeRemoteDataSource)
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
-  late NetworkService _networkService;
+  final NetworkService _networkService;
 
-  HomeRemoteDataSourceImpl() {
-    _networkService = NetworkService.create();
-  }
+  HomeRemoteDataSourceImpl(this._networkService);
 
   @override
   Future<List<CurrencyModel>> getCurrencies() async {

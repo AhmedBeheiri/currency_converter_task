@@ -2,8 +2,9 @@ import 'package:currency_converter_task/core/error/exceptions.dart';
 import 'package:currency_converter_task/features/Home/data/local/models/currency_local_model.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../remote/models/currencies_model.dart';
+
+
 
 const String currenciesBox = 'CurrenciesBox';
 
@@ -15,10 +16,15 @@ abstract class HomeLocalDataSource {
 
 @LazySingleton(as: HomeLocalDataSource)
 class HomeLocalDataSourceImpl implements HomeLocalDataSource {
+
+  final HiveInterface hive;
+
+
+
   @override
   Future<List<CurrencyModel>> getCurrencies() async {
     try {
-      var box = await Hive.openBox<CurrencyLocalModel>(currenciesBox);
+      var box = await hive.openBox<CurrencyLocalModel>(currenciesBox);
       List<CurrencyModel> currencies = [];
       for (var i = 0; i < box.length; i++) {
         if (box.getAt(i) != null) {
@@ -35,7 +41,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   Future<List<CurrencyModel>> saveCurrencies(
       List<CurrencyModel> currencies) async {
     try {
-      var box = Hive.box<CurrencyLocalModel>(currenciesBox);
+      var box = hive.box<CurrencyLocalModel>(currenciesBox);
       await box.clear();
       await box.addAll(
           currencies.map((e) => CurrencyLocalModel.fromCurrencyModel(e)));
@@ -44,4 +50,8 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
       throw CacheException(e.toString());
     }
   }
+
+  HomeLocalDataSourceImpl({
+    required this.hive
+  });
 }
