@@ -13,6 +13,7 @@ class DropDownCustomItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
+        // add the flag image won't work because country code is not available in the [https://freecurrencyapi.com]/ apis
         CachedNetworkImage(
           imageUrl: "https://flagcdn.com/16x12/${value.currencySymbol}.png",
           placeholder: (context, url) => const CircularProgressIndicator(),
