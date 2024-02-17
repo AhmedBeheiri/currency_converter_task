@@ -6,7 +6,7 @@ This document provides information on building, understanding, and the technolog
 
 **Prerequisites:**
 
-* Flutter installation: [https://flutter.dev/docs/get-started/install](https://flutter.dev/docs/get-started/install) (version [specify required version])
+* Flutter installation: [https://flutter.dev/docs/get-started/install](https://flutter.dev/docs/get-started/install) (version [latest_version])
 * Android Studio / Visual Studio Code: https://code.visualstudio.com/
 
 **Instructions:**
