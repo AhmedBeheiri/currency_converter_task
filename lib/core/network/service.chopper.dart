@@ -46,4 +46,25 @@ final class _$NetworkService extends NetworkService {
     );
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getHistoricalRates(
+    String from,
+    List<String> to,
+    String date,
+  ) {
+    final Uri $url = Uri.parse('v1/historical');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'base_currency': from,
+      'currencies': to,
+      'date': date,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
 }

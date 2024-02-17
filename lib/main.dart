@@ -1,15 +1,20 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:developer';
 
+import 'package:currency_converter_task/features/Home/data/local/models/currency_local_model.dart';
 import 'package:currency_converter_task/features/Home/presentation/pages/home_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'core/di/injection_container.dart' as di;
 import 'package:logging/logging.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   di.configureInjection();
+  await Hive.initFlutter();
+  Hive.registerAdapter(CurrencyLocalModelAdapter());
+
   runApp(const MyApp());
   Logger.root.level =
   !kDebugMode ? Level.OFF : Level.ALL; // defaults to Level.INFO

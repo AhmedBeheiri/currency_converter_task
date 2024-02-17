@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:currency_converter_task/core/utils/nullable.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
@@ -12,42 +14,51 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepository;
 
-  HomeCubit(this._homeRepository) : super(HomeInitial());
+  HomeCubit(this._homeRepository) : super(const HomeState());
 
   void getCurrencies() async {
-    emit(HomeLoading());
+    emit(state.requestLoading());
     final result = await _homeRepository.getCurrencies();
     result.fold(
-      (failure) => emit(HomeError((failure as ServerFailure).error)),
-      (currencies) => emit(CurrenciesLoaded(currencies)),
+      (failure) => emit(state.requestFailed(failure)),
+      (currencies) => emit(state.requestSuccess(currencies)),
     );
   }
 
   void setFromCurrency(CurrencyEntity? currency) {
-    emit((state as CurrenciesLoaded).copyWith(
-      fromCurrency: currency,
-      conversionRate: null,
-    ));
+    emit(state.fromCurrencyChanged(currency));
   }
 
   void setToCurrency(CurrencyEntity? currency) {
-    emit((state as CurrenciesLoaded).copyWith(
-      toCurrency: currency,
-      conversionRate: null,
-    ));
+    emit(state.toCurrencyChanged(currency));
   }
 
-  void convertCurrency(String from, String to) async {
-    emit((state as CurrenciesLoaded).copyWith(loading: true));
-    final result = await _homeRepository.getConversionRate(from, to);
+  void changeAmount(String amount) {
+    emit(state.amountChanged(amount));
+  }
+
+  void convertCurrency() async {
+    emit(state.requestConversionLoading());
+    final result = await _homeRepository.getConversionRate(
+        state.fromCurrency!.currencyCode, state.toCurrency!.currencyCode);
     result.fold(
-      (failure) => emit(HomeError((failure as ServerFailure).error)),
-      (rate) => emit(
-        (state as CurrenciesLoaded).copyWith(
-          conversionRate: rate.toDouble(),
-          loading: false,
-        ),
-      ),
+      (failure) => emit(state.requestFailed(failure as ServerFailure)),
+      (rate) {
+        final result = num.parse(state.amount) * rate;
+        emit(
+          state.requestConversionSuccess(result.toDouble()),
+        );
+      },
+    );
+  }
+
+  void getHistoricalRates() async {
+    emit(state.historicalRatesLoading());
+    final result = await _homeRepository.getHistoricalRates(
+        state.fromCurrency!.currencyCode, state.toCurrency!.currencyCode);
+    result.fold(
+      (failure) => emit(state.requestFailed(failure as ServerFailure)),
+      (historicalRates) => emit(state.historicalRatesSuccess(historicalRates)),
     );
   }
 }

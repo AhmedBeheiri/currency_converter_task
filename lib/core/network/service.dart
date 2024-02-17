@@ -27,4 +27,11 @@ abstract class NetworkService extends ChopperService {
     @Query('base_currency') String from,
     @Query('currencies') List<String> to,
   );
+
+  @Get(path: 'v1/historical')
+  Future<Response> getHistoricalRates(
+    @Query('base_currency') String from,
+    @Query('currencies') List<String> to,
+    @Query('date') String date,
+  );
 }
